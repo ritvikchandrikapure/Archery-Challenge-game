@@ -1,0 +1,664 @@
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@500;700;800&display=swap');
+
+:root {
+  --night: #140d38;
+  --plum: #2a1a5e;
+  --gold: #ffd34d;
+  --coral: #ff7a59;
+  --cream: #fff7e0;
+  --glass: rgba(255, 255, 255, 0.1);
+  --line: rgba(255, 255, 255, 0.2);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: radial-gradient(1200px 600px at 50% -10%, #3b2380 0%, var(--night) 70%);
+  color: var(--cream);
+  font-family: 'Nunito', system-ui, sans-serif;
+  display: block;
+}
+
+.app {
+  max-width: 1120px;
+  margin: 0 auto;
+  min-height: 100%;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---------- HUD ---------- */
+.hud,
+.dock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 10px 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand h1 {
+  margin: 0;
+  font: 400 1.7rem/1 'Lilita One', cursive;
+  letter-spacing: 0.5px;
+  color: var(--gold);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.brand span {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  font-weight: 700;
+}
+
+.quiver-bar {
+  display: flex;
+  gap: 6px;
+}
+
+.quiver-bar svg {
+  transition: opacity 0.3s, transform 0.3s;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
+}
+
+.quiver-bar svg.used {
+  opacity: 0.18;
+  transform: translateX(10px);
+}
+
+.scores {
+  display: flex;
+  gap: 10px;
+}
+
+.pill {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 14px;
+  padding: 6px 18px;
+  text-align: center;
+  min-width: 64px;
+}
+
+.pill span {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  opacity: 0.7;
+}
+
+.pill b {
+  display: inline-block;
+  font: 400 1.7rem/1.1 'Lilita One', cursive;
+  color: var(--gold);
+}
+
+.bump {
+  animation: bump 0.45s ease;
+}
+
+/* ---------- stage ---------- */
+.stage {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 6px rgba(255, 122, 89, 0.12), 0 30px 70px rgba(0, 0, 0, 0.6);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.stage svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none;
+  cursor: grab;
+}
+
+.stage svg:active {
+  cursor: grabbing;
+}
+
+.quiver {
+  transform-origin: 84px 0;
+  animation: quiver 0.6s ease-out;
+}
+
+.spark {
+  animation: spark 0.6s ease-out forwards;
+}
+
+.burst {
+  animation: burst 0.6s ease-out forwards;
+  vector-effect: non-scaling-stroke;
+}
+
+.pop {
+  font: 400 34px 'Lilita One', cursive;
+  fill: #fff;
+  stroke: rgba(0, 0, 0, 0.6);
+  stroke-width: 5px;
+  paint-order: stroke;
+  animation: pop 1.1s ease-out forwards;
+}
+
+.pop.gold {
+  fill: var(--gold);
+  font-size: 44px;
+}
+
+/* ---------- overlay ---------- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  background: rgba(14, 8, 40, 0.7);
+  padding: 14px;
+}
+
+.card {
+  width: min(420px, 100%);
+  background: linear-gradient(160deg, #fff7e0, #ffe2b5);
+  color: #2a1a5e;
+  border-radius: 24px;
+  padding: 26px 28px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: rise 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.card h2 {
+  margin: 0 0 12px;
+  font: 400 2.2rem/1 'Lilita One', cursive;
+  color: #e04848;
+}
+
+.card p {
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+.card small {
+  display: block;
+  margin-top: 12px;
+  opacity: 0.6;
+  font-weight: 700;
+}
+
+.how {
+  text-align: left;
+  margin: 0 0 18px;
+  padding-left: 22px;
+  line-height: 1.5;
+}
+
+.how li {
+  margin-bottom: 6px;
+}
+
+.big {
+  font: 400 4.2rem/1 'Lilita One', cursive;
+  color: #e04848;
+  margin-bottom: 6px;
+}
+
+.big span {
+  font-size: 1.4rem;
+  color: #2a1a5e;
+  opacity: 0.5;
+}
+
+.stars {
+  font-size: 2.6rem;
+  letter-spacing: 6px;
+}
+
+.stars span {
+  color: rgba(42, 26, 94, 0.2);
+  display: inline-block;
+}
+
+.stars span.on {
+  color: var(--gold);
+  text-shadow: 0 2px 0 #c58a00;
+  animation: starIn 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+.stars span.on:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.stars span.on:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.btn {
+  background: linear-gradient(180deg, #ffe27a, var(--gold));
+  color: #3b2380;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 32px;
+  font: 400 1.2rem 'Lilita One', cursive;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #c58a00, 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #c58a00;
+}
+
+.btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ---------- dock ---------- */
+.meter {
+  flex: 1;
+  min-width: 240px;
+}
+
+.meter-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.meter-top span {
+  opacity: 0.7;
+  font-weight: 800;
+}
+
+.meter-top b {
+  font: 400 1.2rem 'Lilita One', cursive;
+  color: var(--gold);
+  min-width: 44px;
+}
+
+.bar {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80, #ffd34d 60%, #ff5a4f);
+  border-radius: 999px;
+  transition: width 0.05s linear;
+}
+
+.tip {
+  font-weight: 800;
+  opacity: 0.85;
+  text-align: right;
+  flex: 1;
+  min-width: 200px;
+}
+
+/* ---------- animations ---------- */
+@keyframes quiver {
+  0% {
+    transform: rotate(0);
+  }
+
+  20% {
+    transform: rotate(6deg);
+  }
+
+  40% {
+    transform: rotate(-5deg);
+  }
+
+  60% {
+    transform: rotate(3deg);
+  }
+
+  80% {
+    transform: rotate(-1.5deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes spark {
+  from {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes burst {
+  from {
+    transform: scale(0.5);
+    opacity: 0.9;
+  }
+
+  to {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.15);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) scale(1);
+  }
+}
+
+@keyframes drift-old {
+  from {
+    transform: translateX(-320px);
+  }
+
+  to {
+    transform: translateX(1250px);
+  }
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.4);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes starIn {
+  from {
+    transform: scale(0) rotate(-90deg);
+  }
+
+  to {
+    transform: scale(1) rotate(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .hud {
+    justify-content: center;
+  }
+
+  .quiver-bar svg {
+    width: 34px;
+  }
+
+  .tip {
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+}
+
+/* ---------- floating sky: clouds and birds (GPU transforms only) ---------- */
+.sky-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  left: 0;
+  will-change: transform;
+  animation: sweep linear infinite;
+}
+
+.cloud i {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(#fff4ea, #ffcfb8);
+}
+
+.cloud i::before,
+.cloud i::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud i::before {
+  width: 42%;
+  height: 170%;
+  left: 14%;
+  top: -85%;
+}
+
+.cloud i::after {
+  width: 34%;
+  height: 130%;
+  right: 14%;
+  top: -50%;
+}
+
+.cloud.c1 {
+  top: 9%;
+  width: 150px;
+  height: 22px;
+  opacity: 0.55;
+  animation-duration: 75s;
+  animation-delay: -20s;
+}
+
+.cloud.c2 {
+  top: 21%;
+  width: 220px;
+  height: 30px;
+  opacity: 0.4;
+  animation-duration: 115s;
+  animation-delay: -70s;
+}
+
+.cloud.c3 {
+  top: 4%;
+  width: 110px;
+  height: 16px;
+  opacity: 0.6;
+  animation-duration: 60s;
+  animation-delay: -45s;
+}
+
+.cloud.c4 {
+  top: 15%;
+  width: 180px;
+  height: 24px;
+  opacity: 0.5;
+  animation-duration: 95s;
+  animation-delay: -5s;
+}
+
+.bird {
+  position: absolute;
+  left: 0;
+  width: 70px;
+  height: 35px;
+  will-change: transform;
+  animation: fly linear infinite;
+}
+
+.bird .wing {
+  transform-box: view-box;
+  transform-origin: 20px 10px;
+  animation: flap 0.45s ease-in-out infinite alternate;
+}
+
+.bird .wr {
+  animation-name: flapR;
+}
+
+.bird.b1 {
+  top: 12%;
+  animation-duration: 28s;
+  animation-delay: -4s;
+}
+
+.bird.b2 {
+  top: 15%;
+  width: 54px;
+  height: 42px;
+  animation-duration: 28s;
+  animation-delay: -2.6s;
+}
+
+.bird.b3 {
+  top: 9%;
+  width: 22px;
+  height: 11px;
+  animation-duration: 28s;
+  animation-delay: -1.4s;
+}
+
+.bird.b4 {
+  top: 24%;
+  width: 36px;
+  height: 23px;
+  animation-duration: 40s;
+  animation-delay: -22s;
+}
+
+.bird.b5 {
+  top: 6%;
+  width: 20px;
+  height: 10px;
+  animation-duration: 34s;
+  animation-delay: -14s;
+}
+
+.bird.b2 .wing,
+.bird.b5 .wing {
+  animation-duration: 0.38s;
+}
+
+.bird.b3 .wing {
+  animation-duration: 0.52s;
+}
+
+@keyframes sweep {
+  from {
+    transform: translateX(-340px);
+  }
+
+  to {
+    transform: translateX(1300px);
+  }
+}
+
+@keyframes fly {
+  0% {
+    transform: translate(-60px, 0);
+  }
+
+  25% {
+    transform: translate(260px, -8px);
+  }
+
+  50% {
+    transform: translate(560px, 4px);
+  }
+
+  75% {
+    transform: translate(900px, -6px);
+  }
+
+  100% {
+    transform: translate(1300px, 0);
+  }
+}
+
+@keyframes flap {
+  from {
+    transform: rotate(-28deg);
+  }
+
+  to {
+    transform: rotate(22deg);
+  }
+}
+
+@keyframes flapR {
+  from {
+    transform: rotate(28deg);
+  }
+
+  to {
+    transform: rotate(-22deg);
+  }
+}
